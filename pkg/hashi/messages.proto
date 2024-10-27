@@ -1,0 +1,27 @@
+syntax = "proto3";
+package gogo;
+
+option go_package = "pkg/hashi";
+
+enum ResponseStatus {
+    Unknown = 0;
+    Success = 1;
+    Failed = 2;
+}
+
+message Request {
+    string SourceIP = 1;
+    string Domain = 2;
+    string URI = 3;
+    string Method = 4;
+
+    message Header {
+        string field = 1;
+        string value = 2;
+    }
+    repeated Header Headers = 5;
+}
+
+message Response {
+    ResponseStatus Status = 1;
+}
