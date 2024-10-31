@@ -147,16 +147,13 @@ func (hah *HalfAsyncHashi) AsyncReceiveServer() error { // for Server
 			return err
 		}
 
-		go hah.AsyncSendServer(receivedMessage)
-		hah.Bucket <- receivedMessage
+		hah.AsyncSendServer(receivedMessage)
 	}
 }
 
 func (hah *HalfAsyncHashi) AsyncSendServer(message proto.Message) { // for Server
-	receivedMessage := <-hah.Bucket
-
 	// run callback function
-	result, _ := hah.serverCallback(receivedMessage)
+	result, _ := hah.serverCallback(message)
 
 	// marshal message
 	responseMessageBytes, err := proto.Marshal(result.(proto.Message))

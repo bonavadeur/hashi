@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"reflect"
+	"sync"
 	"time"
 
 	"github.com/bonavadeur/hashi/pkg/hashi"
@@ -39,17 +40,20 @@ func main() {
 		},
 	}
 
-	for i := 0; i < 10000; i++ {
+	var wg sync.WaitGroup
+	for i := 0; i < 1000; i++ {
+		wg.Add(1)
 		go func() {
 			_, err := client.AsyncSendClient(sentMessage)
 			if err != nil {
 				panic(err)
 			}
+			wg.Done()
 		}()
 	}
+	wg.Wait()
 
 	// End timing
 	elapsed := time.Since(start)
-	fmt.Printf("Time taken: %s\n", elapsed)
-	time.Sleep(3 * time.Second)
+	fmt.Printf("Time taken: %s\n", elapsed/1000)
 }
