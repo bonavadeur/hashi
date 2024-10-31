@@ -25,7 +25,6 @@ type SyncHashi struct {
 	serverCallback BridgeCallback
 	MessageIDCount uint32
 	mu             sync.Mutex
-	
 }
 
 func NewSyncHashi(
@@ -54,7 +53,7 @@ func NewSyncHashi(
 	checkPipeExist(downstreamFile)
 	checkPipeExist(upstreamFile)
 
-	if bridgeType == BRIDGE_TYPE_SYNC_SERVER {
+	if bridgeType == HASHI_TYPE_SYNC_SERVER {
 		newHashi.downstream, err = os.OpenFile(downstreamFile, os.O_RDONLY, os.ModeNamedPipe)
 		if err != nil {
 			panic(err)
@@ -65,7 +64,7 @@ func NewSyncHashi(
 		}
 		go newHashi.ReceiveAndSend()
 	}
-	if bridgeType == BRIDGE_TYPE_SYNC_CLIENT {
+	if bridgeType == HASHI_TYPE_SYNC_CLIENT {
 		newHashi.upstream, err = os.OpenFile(upstreamFile, os.O_WRONLY, os.ModeNamedPipe)
 		if err != nil {
 			panic(err)

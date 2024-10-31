@@ -7,23 +7,30 @@ import (
 	"github.com/bonavadeur/hashi/pkg/hashi"
 )
 
+type Nani struct {
+	messages []interface{}
+}
+
+func (n *Nani) Callback(params ...interface{}) (interface{}, error) {
+	n.messages = append(n.messages, params[0])
+	return params[0], nil
+}
+
 func main() {
 	ctx := context.Background()
 
-	callback := func(params ...interface{}) (interface{}, error) {
-		message := params[0]
-		// fmt.Println(message)
-		return message, nil
+	nani := &Nani{
+		messages: []interface{}{},
 	}
 
 	_ = hashi.NewHalfAsyncHashi(
 		"async-server",
-		hashi.BRIDGE_TYPE_ASYNC_SERVER,
+		hashi.HASHI_TYPE_HALF_ASYNC_SERVER,
 		"/tmp/server-client",
 		"/tmp/client-server",
 		reflect.TypeOf(hashi.Request{}),
 		reflect.TypeOf(hashi.Request{}),
-		callback,
+		nani.Callback,
 	)
 
 	<-ctx.Done()

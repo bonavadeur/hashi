@@ -14,7 +14,7 @@ func main() {
 
 	client := hashi.NewHalfAsyncHashi(
 		"async-client",
-		hashi.BRIDGE_TYPE_ASYNC_CLIENT,
+		hashi.HASHI_TYPE_HALF_ASYNC_CLIENT,
 		"/tmp/client-server",
 		"/tmp/server-client",
 		reflect.TypeOf(hashi.Request{}),
@@ -39,19 +39,17 @@ func main() {
 		},
 	}
 
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 10000; i++ {
 		go func() {
-			result, err := client.AsyncSendClient(sentMessage)
+			_, err := client.AsyncSendClient(sentMessage)
 			if err != nil {
 				panic(err)
 			}
-			fmt.Println("result", result, "\n")
 		}()
 	}
 
 	// End timing
 	elapsed := time.Since(start)
-	// fmt.Println("received:", receivedMessage)
 	fmt.Printf("Time taken: %s\n", elapsed)
 	time.Sleep(3 * time.Second)
 }

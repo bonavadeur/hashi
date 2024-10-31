@@ -14,7 +14,7 @@ func main() {
 
 	client := hashi.NewSyncHashi(
 		"client",
-		hashi.BRIDGE_TYPE_SYNC_CLIENT,
+		hashi.HASHI_TYPE_SYNC_CLIENT,
 		"/tmp/client-server",
 		"/tmp/server-client",
 		reflect.TypeOf(hashi.Request{}),
